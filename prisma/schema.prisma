@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum GeneralStatus {
+  Active
+  InActive
+}
+
+enum OrderStatus {
+  pending
+  cancelled
+  completed
+}
+
+model User {
+  id            String        @id @default(uuid())
+  name          String
+  username      String        @unique
+  email         String        @unique
+  status        GeneralStatus @default(Active)
+  password      String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime?
+  passwordToken String?
+  tokenVerfied  Boolean       @default(false)
+  tokenExpireAt String?
+  Order         Order[]
+}
+
+model Restaurant {
+  id          String        @id @default(uuid())
+  name        String
+  description String?
+  location    String
+  status      GeneralStatus @default(Active)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime?
+  Meal        Meal[]
+  Order       Order[]
+}
+
+model Meal {
+  id          String        @id @default(uuid())
+  name        String
+  description String?
+  price       Decimal
+  status      GeneralStatus @default(Active)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime?
+  resturant   Restaurant    @relation(fields: [resturantId], references: [id])
+  resturantId String
+  OrdersMeals OrdersMeals[]
+}
+
+model Order {
+  id           String        @id @default(uuid())
+  user         User          @relation(fields: [userId], references: [id])
+  userId       String
+  restaurant   Restaurant    @relation(fields: [restaurantId], references: [id])
+  restaurantId String
+  totalPrice   Decimal
+  location     String        @db.VarChar(200)
+  notes        String?       @db.VarChar(255)
+  phoneNumber  String
+  status       OrderStatus   @default(pending)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime?
+  OrdersMeals  OrdersMeals[]
+}
+
+model OrdersMeals {
+  meal     Meal    @relation(fields: [mealId], references: [id])
+  mealId   String
+  order    Order   @relation(fields: [orderId], references: [id])
+  orderId  String
+  quantity Decimal
+
+  @@id([orderId, mealId])
+}
