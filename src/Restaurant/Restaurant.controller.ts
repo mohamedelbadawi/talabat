@@ -81,5 +81,21 @@ class RestaurantController {
       return res.status(400).json({ message: "Internal server Error" });
     }
   }
+
+  public static async acceptRestaurantRequest(req: AuthRequest, res: Response) {
+    try {
+      const { id } = req.params;
+      const restaurant = await restaurantService.updateOne(id, {
+        status: "Active",
+      });
+      return res.status(200).json({
+        message: "Restaurant Accepted successfully",
+        data: restaurant,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(400).json({ message: "Internal server Error" });
+    }
+  }
 }
 export default RestaurantController;

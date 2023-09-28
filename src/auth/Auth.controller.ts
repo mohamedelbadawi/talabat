@@ -17,7 +17,7 @@ export class AuthController {
         username,
         password: hashedPassword,
       });
-      const token = await authServices.generateAccessToken(user.id);
+      const token = await authServices.generateAccessToken(user.id, user.role);
 
       return res.json({ AccessToken: token });
     } catch (error) {
@@ -35,7 +35,7 @@ export class AuthController {
       if (!isMatch) {
         return res.status(400).json({ error: "Invalid credentials" });
       }
-      const token = await authServices.generateAccessToken(user.id);
+      const token = await authServices.generateAccessToken(user.id, user.role);
       return res.json({ accessToken: token });
     } catch (error) {
       console.log(error);

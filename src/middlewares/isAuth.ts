@@ -24,6 +24,7 @@ export async function isAuth(
         return res.status(401).json({ message: "Invalid token" });
       }
       req.userId = (decodedToken as any).userId;
+      req.role = (decodedToken as any).role;
       next();
     }
   );

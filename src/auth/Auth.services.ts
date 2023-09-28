@@ -1,5 +1,5 @@
 import { userRepository } from "../repositories/User/UserRepository";
-import { Prisma } from "@prisma/client";
+import { Prisma, Role } from "@prisma/client";
 import Jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 import EmailOptions from "../utils/email/EmailOptions";
@@ -32,10 +32,14 @@ export class AuthServices {
   public async deleteUser(id: string) {
     return await userRepository.deleteOne(id);
   }
-  public async generateAccessToken(userId: string) {
-    return Jwt.sign({ userId: userId }, process.env.JWT_SECRET_KEY as string, {
-      expiresIn: "24h",
-    });
+  public async generateAccessToken(userId: string, role: Role) {
+    return Jwt.sign(
+      { userId: userId, role: role },
+      process.env.JWT_SECRET_KEY as string,
+      {
+        expiresIn: "24h",
+      }
+    );
   }
   public async generateResetPasswordToken() {
     return uuidv4();

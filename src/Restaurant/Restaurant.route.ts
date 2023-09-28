@@ -4,6 +4,7 @@ import requestRestaurantValidator from "./validators/requestRestaurant.validator
 import RestaurantController from "./Restaurant.controller";
 import restaurantOwner from "../middlewares/restaurantOwner";
 import updateRestaurantValidator from "./validators/updateRestaurant.validator";
+import { isAdmin } from "../middlewares/IsAdmin";
 
 const restaurantRouter = Router();
 
@@ -29,5 +30,10 @@ restaurantRouter.delete(
   RestaurantController.deleteRestaurant
 );
 restaurantRouter.get("/:id", isAuth, RestaurantController.getRestaurantById);
-
+restaurantRouter.post(
+  "/accept/:id",
+  isAuth,
+  isAdmin,
+  RestaurantController.acceptRestaurantRequest
+);
 export default restaurantRouter;
