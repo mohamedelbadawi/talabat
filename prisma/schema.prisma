@@ -34,6 +34,7 @@ model User {
   tokenVerfied  Boolean       @default(false)
   tokenExpireAt String?
   Order         Order[]
+  Restaurant    Restaurant[]
 }
 
 model Restaurant {
@@ -41,7 +42,9 @@ model Restaurant {
   name        String
   description String?
   location    String
-  status      GeneralStatus @default(Active)
+  user        User          @relation(fields: [userId], references: [id])
+  userId      String
+  status      GeneralStatus @default(InActive)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime?
   Meal        Meal[]

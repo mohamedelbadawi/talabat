@@ -1,4 +1,4 @@
-import { userRepository } from "./../repositories/UserRepository";
+import { userRepository } from "../repositories/User/UserRepository";
 import { Prisma } from "@prisma/client";
 import Jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
@@ -40,12 +40,16 @@ export class AuthServices {
   public async generateResetPasswordToken() {
     return uuidv4();
   }
-  public async sendResetPasswordEmail(email: string, token: string,userId:string) {
+  public async sendResetPasswordEmail(
+    email: string,
+    token: string,
+    userId: string
+  ) {
     const mailOptions: EmailOptions = {
       from: "team@talabat.com",
       to: email,
       subject: "Reset Password",
-      html: resetPasswordEmail(token,userId),
+      html: resetPasswordEmail(token, userId),
     };
     await emailService.send(mailOptions);
     return true;
