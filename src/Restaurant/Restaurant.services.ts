@@ -50,5 +50,13 @@ export class RestaurantServices {
   async deleteOne(id: string) {
     return await restaurantRepository.delete(id);
   }
+  async getRestaurantMeals(id: string) {
+    return await restaurantRepository.getOne(
+      { id: id },
+      {
+        Meal: true,
+      }
+    );
+  }
 }
 export const restaurantService = new RestaurantServices();

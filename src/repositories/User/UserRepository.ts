@@ -1,5 +1,4 @@
 import { Prisma, PrismaClient } from "@prisma/client";
-import { IUserRepository } from "./IUserRepository";
 
 export class UserRepository {
   private prisma: PrismaClient;

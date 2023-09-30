@@ -74,7 +74,7 @@ class RestaurantController {
   public static async getRestaurantById(req: AuthRequest, res: Response) {
     try {
       const { id } = req.params;
-      const restaurant = await restaurantService.findById(id);
+      const restaurant = await restaurantService.getRestaurantMeals(id);
       return res.json({ data: restaurant });
     } catch (error) {
       console.error(error);

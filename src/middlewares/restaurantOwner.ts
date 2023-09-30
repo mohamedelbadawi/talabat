@@ -7,17 +7,16 @@ export async function restaurantOwner(
   res: Response,
   next: NextFunction
 ) {
-  const { id } = req.params;
+  const id = req.params.id || req.body.restaurantId;
+
   const restaurant = await restaurantService.findById(id);
   if (!restaurant) {
     return res.status(401).json({ message: "invalid restaurant" });
   }
   if (!(req.userId === restaurant.userId)) {
-    return res
-      .status(401)
-      .json({
-        message: "you don't have the permission to update this restaurant",
-      });
+    return res.status(401).json({
+      message: "you don't have the permission to update this restaurant",
+    });
   }
   next();
 }

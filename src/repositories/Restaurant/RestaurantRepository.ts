@@ -11,9 +11,13 @@ class RestaurantRepository {
       data,
     });
   }
-  async getOne(where: Prisma.RestaurantWhereUniqueInput) {
+  async getOne(
+    where: Prisma.RestaurantWhereUniqueInput,
+    include?: Prisma.RestaurantInclude
+  ) {
     return this.prisma.restaurant.findUnique({
       where,
+      include: include,
     });
   }
   async update(id: string, data: Prisma.RestaurantUncheckedUpdateInput) {
