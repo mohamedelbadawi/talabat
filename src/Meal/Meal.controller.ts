@@ -1,6 +1,6 @@
-import { Response } from "express";
-import AuthRequest from "../middlewares/Interfaces/AuthInterface";
-import { MealServices, mealServices } from "./Meal.services";
+import { type Response } from "express";
+import type AuthRequest from "../middlewares/Interfaces/AuthInterface";
+import { mealServices } from "./Meal.services";
 import { mealRepository } from "../repositories/Meal/MealRepository";
 
 export class MealController {
@@ -26,6 +26,7 @@ export class MealController {
       return res.status(400).json({ message: "Internal server Error" });
     }
   }
+
   public static async updateMeal(req: AuthRequest, res: Response) {
     try {
       const { name, description, price, status } = req.body;
@@ -58,7 +59,7 @@ export class MealController {
   public static async getMeal(req: AuthRequest, res: Response) {
     try {
       const { id } = req.params;
-      const meal = await mealRepository.getOne({ id: id });
+      const meal = await mealRepository.getOne({ id });
       return res.json({ data: meal });
     } catch (error) {
       console.error(error);

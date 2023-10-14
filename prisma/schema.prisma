@@ -42,6 +42,7 @@ model User {
   Restaurant    Restaurant[]
   role          Role          @default(User)
   Meal          Meal[]
+  Cart          Cart[]
 }
 
 model Restaurant {
@@ -71,6 +72,25 @@ model Meal {
   user         User          @relation(fields: [userId], references: [id])
   userId       String
   OrdersMeals  OrdersMeals[]
+  CartItem     CartItem[]
+}
+
+model Cart {
+  id        String     @id @default(uuid())
+  userId    String     @unique
+  createdAt DateTime   @default(now())
+  user      User       @relation(fields: [userId], references: [id])
+  total     Decimal    @default(0)
+  items     CartItem[]
+}
+
+model CartItem {
+  id       String @id @default(uuid())
+  cartId   String
+  mealId   String
+  quantity Int
+  cart     Cart   @relation(fields: [cartId], references: [id])
+  meal     Meal   @relation(fields: [mealId], references: [id])
 }
 
 model Order {

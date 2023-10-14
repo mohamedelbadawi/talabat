@@ -5,6 +5,7 @@ import { config } from "dotenv";
 import authRouter from "./src/auth/Auth.route";
 import restaurantRouter from "./src/Restaurant/Restaurant.route";
 import mealRoutes from "./src/Meal/Meal.route";
+import cartRoutes from "./src/Cart/Cart.route";
 const app = express();
 config();
 
@@ -19,6 +20,7 @@ app.use(cors());
 app.use("/api/auth", authRouter);
 app.use("/api/restaurant", restaurantRouter);
 app.use("/api/meal", mealRoutes);
+app.use("/api/cart", cartRoutes);
 app.listen(4000, () => {
   console.log("Talabat listening on port 4000!");
 });

@@ -17,6 +17,7 @@ export class MealRepository {
   async getOne(where: Prisma.MealWhereUniqueInput) {
     return await this.prisma.meal.findUnique({ where: where });
   }
+  
 }
 
 export const mealRepository = new MealRepository();
