@@ -13,12 +13,7 @@ export class CartServices {
     return cart.id;
   }
   async addMeal(cartId: string, mealId: string, quantity: number) {
-    // check if the meal is already added
-    return await cartRepository.createCartItem({
-      cartId,
-      mealId,
-      quantity,
-    });
+    return await cartRepository.createOrUpdate(mealId, cartId, quantity);
   }
 
   async calculateTotal(cartId: string) {
@@ -27,7 +22,7 @@ export class CartServices {
 
     // calculate the price for each item with quantity
     let total: number = 0;
-    items?.items.forEach((item: any) => {
+    items?.CartItems.forEach((item: any) => {
       total += item.quantity * item.meal.price;
     });
     return total;
@@ -40,11 +35,14 @@ export class CartServices {
   async deleteItem(cartItemId: string) {
     return cartRepository.deleteCartItem(cartItemId);
   }
-  async updateItem(cartItemId: string, qty: number) {
-    return cartRepository.updateCartItem(cartItemId, { quantity: qty });
-  }
+  // async updateItem(cartItemId: string, qty: number) {
+  //   return cartRepository.updateCartItem(cartItemId, { quantity: qty });
+  // }
   async getCart(cartId: string) {
     return await cartRepository.getAllCartItems(cartId);
+  }
+  async freeCart(cartId: string) {
+    return await cartRepository.delete(cartId);
   }
 }
 export const cartServices = new CartServices();

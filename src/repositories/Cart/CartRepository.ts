@@ -20,13 +20,29 @@ export class CartRepository {
   async createCartItem(cartItemData: Prisma.CartItemUncheckedCreateInput) {
     return await this.prisma.cartItem.create({ data: cartItemData });
   }
+  async createOrUpdate(mealId: string, cartId: string, qty: number) {
+    await this.prisma.cartItem.upsert({
+      where: {
+        mealId_cartId: {
+          mealId: mealId,
+          cartId: cartId,
+        },
+      },
+
+      create: {
+        cartId: cartId,
+        mealId: mealId,
+        quantity: qty,
+      },
+      update: { quantity: qty },
+    });
+  }
   async getAllCartItems(cartId: string) {
     return await this.prisma.cart.findUnique({
       where: { id: cartId },
       select: {
-        items: {
+        CartItems: {
           select: {
-            id: true,
             meal: {
               select: {
                 name: true,
@@ -47,17 +63,22 @@ export class CartRepository {
       where: { cartId: cartId },
     });
   }
+  async getCartItem(where: Prisma.CartItemWhereUniqueInput) {
+    return await this.prisma.cartItem.findUnique({
+      where: where,
+    });
+  }
   async deleteCartItem(cartItemId: string) {
     return await this.prisma.cartItem.delete({ where: { id: cartItemId } });
   }
-  async updateCartItem(
-    cartItemId: string,
-    itemData: Prisma.CartItemUncheckedUpdateInput
-  ) {
-    return await this.prisma.cartItem.update({
-      where: { id: cartItemId },
-      data: itemData,
-    });
-  }
+  // async updateCartItem(
+  //   cartItemId: string,
+  //   itemData: Prisma.CartItemUncheckedUpdateInput
+  // ) {
+  //   return await this.prisma.cartItem.update({
+  //     where: { id: cartItemId },
+  //     data: itemData,
+  //   });
+  // }
 }
 export const cartRepository = new CartRepository();

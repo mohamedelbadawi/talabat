@@ -32,11 +32,11 @@ export class RestaurantServices {
           },
         ],
 
-        AND: [
-          {
-            status: restaurantsFeature.status || "Active",
-          },
-        ],
+        // AND: [
+        //   {
+        //     status: restaurantsFeature.status || "Active",
+        //   },
+        // ],
       }
     );
     return data;

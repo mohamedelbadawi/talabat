@@ -13,8 +13,9 @@ export class CartController {
 
       await cartServices.updateCartWithTotalPrice(cartId);
       const cart = await cartServices.getCart(cartId);
-      return res.json({ data: cart });
+      return res.json({ message: "meal added successfully", data: cart });
     } catch (error) {
+      console.log(error);
       return res.status(400).json({ error: "server internal error" });
     }
   }
@@ -34,17 +35,6 @@ export class CartController {
       const cartItem = await cartServices.deleteItem(id);
       await cartServices.updateCartWithTotalPrice(cartItem.cartId);
       return res.json({ message: "item deleted successfully" });
-    } catch (error) {
-      return res.status(400).json({ error: "server internal error" });
-    }
-  }
-  public static async updateCart(req: AuthRequest, res: Response) {
-    try {
-      const { id, qty } = req.body;
-
-      const cartIem = await cartServices.updateItem(id, qty);
-      await cartServices.updateCartWithTotalPrice(cartIem.cartId);
-      return res.json({ message: "item updated successfully" });
     } catch (error) {
       return res.status(400).json({ error: "server internal error" });
     }
